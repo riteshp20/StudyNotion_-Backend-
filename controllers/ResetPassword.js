@@ -13,7 +13,7 @@ exports.resetPasswordToken = async (req, res) => {
                 message:"email is empty, please enter email and try again",
             });
         }
-
+//to check user is register or not
         const user = await User.findOne({email:email});
         if(!user){
             return res.status(500).json({
