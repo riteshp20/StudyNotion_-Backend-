@@ -1,8 +1,8 @@
-const Tag = require("../models/tags");
+const Tag = require("../models/Category");
 
 // create Tag ka Handler function
 
-exports.createTag = async (req, res) => {
+exports.createCategory = async (req, res) => {
     try{
         // data fetch
         const {name, description} = req.body;
@@ -15,11 +15,11 @@ exports.createTag = async (req, res) => {
         }
 
         // create entry in DB
-        const tagDetails = await Tag.create({
+        const categoryDetails = await Tag.create({
             name:name,
             description:description,
         });
-        console.log(tagDetails);
+        console.log(categoryDetails);
 
         // return response
         return res.status(200).json({
@@ -37,9 +37,9 @@ exports.createTag = async (req, res) => {
 
 // getAlltags handler function
 
-exports.showAlltags = async (req, res) =>{
+exports.showAllcategory = async (req, res) =>{
     try{
-        const allTags = await Tag.find({}, {name:true}, {description:true});
+        const allCategory = await Tag.find({}, {name:true}, {description:true});
 
         return res.status(200).json({
             success:true,
