@@ -69,7 +69,7 @@ exports.sendOTP = async (req, res) => {
 exports.signUp = async (req, res) => {
     try{
         // data fetch from request ki body
-        const {firstName, lastName, email, password, confirmPassword, accountType, contactNumber, otp} = req.body();
+        const {firstName, lastName, email, password, confirmPassword, accountType, contactNumber, otp} = req.body;
         // validate krlo
         if(!firstName || !lastName || !email || !password || !confirmPassword || !otp) {
             return res.status(403).json({
