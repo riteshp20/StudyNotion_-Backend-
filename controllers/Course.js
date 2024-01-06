@@ -89,7 +89,6 @@ exports.createCourse = async (req, res) => {
 
 
 // getAllCourses handler function
-
 exports.showAllCourses = async (req, res) => {
     try{
         // TODO: change the below statement incrementally
@@ -113,6 +112,60 @@ exports.showAllCourses = async (req, res) => {
         return res.status(500).json({
             success:true,
             message:"Cannot Fetch course data",
+            error:error.message,
+        });
+    }
+}
+
+// get courseDetails
+exports.getCourseDetails = async (req, res) => {
+    try{
+        // get course id from req body
+        const {courseId} = req.body;
+        // find course details
+        const courseDetails = await Course.find(
+                                    {_id:courseId})
+                                    .populate(
+                                        {
+                                            path:"instructor",
+                                            populate:{
+                                                path:"additionalDetails",
+                                            },
+                                        }
+                                    )
+                                    .pipulate("category")
+                                    .pipulate("ratingAndReviews")
+                                    .populate(
+                                        {
+                                            path:"courseContent",
+                                            populate:{
+                                                path:"section",
+                                                populate:{
+                                                    path:"subSection",
+                                                },
+                                            }
+                                        }
+                                    )
+                                    .exec();
+            // validation
+            if(!courseDetails){
+                return res.status(400).json({
+                    success:false,
+                    message:`Could not find the course with ${courseId}`,
+                });
+            }
+            // return response
+            return res.status(200).json({
+                success:true,
+                message:"Course Details fetched successfully",
+                data:courseDetails,
+            });
+
+    }
+    catch(error){
+        return res.status(500).json({
+            success:false,
+            message:"Something went wrong while fetching courseDeatails",
             error:error.message,
         });
     }
